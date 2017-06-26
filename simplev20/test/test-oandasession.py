@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 26 10:51:54 2017
 
-@author: Johan Steunenberg
+@author: Johan Steunenberg <kontakt@steunenberg.de>
 """
 
 from simplev20.oandasession import OandaSession
@@ -13,7 +13,7 @@ import os
 class TestOandaSession(unittest.TestCase):
     """
     The test assumes the availability of a valid oanda key in the
-    environment variable OANDA_KEY. Zhe key should be valid for 
+    environment variable OANDA_KEY. The key should be valid for 
     a test account
     """
     def setUp(self):
