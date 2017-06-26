@@ -16,4 +16,16 @@ class OandaAccount:
         self.session = session
         self.account_id = account_id
 
+    def __acc(self):
+        """
+        gets the actual information from the account.
+        base method for all public methods
+        """
+        return self.session.account.get(self.account_id).get('account')
+        
+    def get_balance(self):
+        """
+        returns the actual account balance
+        """
+        return self.__acc().balance
 

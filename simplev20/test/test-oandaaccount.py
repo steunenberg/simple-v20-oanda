@@ -33,4 +33,9 @@ class TestOandaAccount(unittest.TestCase):
         self.assertEqual(self.session, account.session)
         self.assertEqual(testid, account.account_id)
         
+    def test_balance(self):
+        account = self.session.get_primary_account()
+        balance = account.get_balance()
+        self.assertIsInstance(balance, float)
+        
 unittest.main()
