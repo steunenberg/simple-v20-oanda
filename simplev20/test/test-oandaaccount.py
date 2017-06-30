@@ -34,6 +34,14 @@ class V20OrderStub:
         else:
             self.status = 0
         return self
+    def market(self, account_id, instrument, units):
+        if instrument == 'USD_EUR':
+            self.status = 0
+        elif units == 0:
+            self.status = 0
+        else:
+            self.status = 200
+        return self
         
 class V20TradeStub:
     """
@@ -68,6 +76,7 @@ class V20SessionStub:
         self.trades = [V20TradeStub(ticker, 4711, -1000.0)]
         self.orders = [V20OrderStub(4711, 'TAKE_PROFIT', 1.1234, 4715)]
         self.trade = V20OrderStub(0, 'LIMIT', 1.1234, 4719)
+        self.order = self.trade
     def get(self, someparam):
         return self
     
@@ -147,7 +156,11 @@ class TestOandaAccount(unittest.TestCase):
     # open a market order
     def test_market_order(self):
         ticker = 'EUR_USD'
+        wrong_ticker = 'USD_EUR'
         self.assertEqual(self.account.market_order(ticker, 1), 200)
+        self.assertNotEqual(self.account.market_order(wrong_ticker, 1), 200)
+        self.assertNotEqual(self.account.market_order(ticker, 0), 200)
+        
     # open a limit order
         
         

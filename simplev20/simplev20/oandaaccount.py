@@ -108,4 +108,9 @@ class OandaAccount:
         response = self.api.trade.close(self.account_id, order_id)
         status = response.status
         return status
+        
+    def market_order(self, ticker, units):
+        response = self.api.order.market(self.account_id, ticker, units)
+        status = response.status
+        return status
     
