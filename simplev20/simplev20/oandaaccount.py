@@ -31,7 +31,8 @@ class OandaAccount:
 
     def get_instruments_with_open_positions(self):
         """
-        Retrieves a list with the instruments we have open positions for
+        Retrieves a list with the instruments we have open 
+        positions for in the current account
         """
         ins = []
         for pos in self.__acc().positions:
@@ -39,6 +40,10 @@ class OandaAccount:
         return ins
 
     def get_position(self, ticker, long_short='net'):
+        """
+        Retrieves the open position for a specific instrument 
+        in the current account
+        """
         for pos in self.__acc().positions:
             ins = pos.instrument
             if ins == ticker:
@@ -54,6 +59,42 @@ class OandaAccount:
                     msg = 'Parameter long_short on method OandaAccount.get_position'
                     msg += ' must be either "long", "short" or "net"'
                     raise ValueError(msg)
-                
-            
         return 0.0
+
+    def get_trades(self):
+        """
+        Retrieves the open trades in the current account
+        """
+        result = {}
+        trades = self.__acc().trades
+        # get relevant trade ids and the current positions
+        for trade in trades:
+            ticker = trade.instrument
+            trade_id = trade.id
+            position = trade.currentUnits
+            if ticker not in result.keys():
+                result[ticker] = []
+            result[ticker].append({'ticker':ticker, 'id':trade_id, 'position': position})
+        return result
+        
+    def get_orders(self, ticker, order_type='ALL'):
+        trade_positions = {}
+        result = []
+        acc = self.__acc()
+        trades = acc.trades
+        orders = acc.orders
+        # get relevant trade ids and the current positions
+        for trade in trades:
+            if trade.instrument == ticker:
+                trade_positions[trade.id] = trade.currentUnits
+        # and get the orders
+        for order in orders:
+            if order.tradeID in trade_positions.keys():
+                _type = order.type
+                if (order_type == 'ALL' or order_type == _type):
+                    d = {}
+                    d['type'] = _type
+                    d['price'] = order.price
+                    d['units'] = trade_positions[order.tradeID]
+                    result.append(d)
+        return result
