@@ -8,6 +8,7 @@ Created on Mon Jun 26 11:45:44 2017
 #from simplev20.oandasession import OandaSession
 from simplev20.oandaaccount import OandaAccount
 
+from collections import defaultdict
 import unittest
 
 class ShortStub:
@@ -24,6 +25,16 @@ class V20OrderStub:
         self.type = order_type
         self.id = anid
         self.price = price
+        self.closed = defaultdict(lambda:1)
+        self.status = 0
+    def close(self, account_id, order_id):
+        if self.closed[order_id] == 1:
+            self.closed[order_id] = 0
+            self.status = 200
+        else:
+            self.status = 0
+        return self
+        
 class V20TradeStub:
     """
     Stub class to mimick trades in OandaAccount 
@@ -33,6 +44,7 @@ class V20TradeStub:
         self.instrument = ticker
         self.id = anid
         self.currentUnits = position
+        
 class V20PositionStub:
     """
     Stub class to mimick positions in OandaAccount 
@@ -55,7 +67,7 @@ class V20SessionStub:
         ticker = "EUR_USD"
         self.trades = [V20TradeStub(ticker, 4711, -1000.0)]
         self.orders = [V20OrderStub(4711, 'TAKE_PROFIT', 1.1234, 4715)]
-        
+        self.trade = V20OrderStub(0, 'LIMIT', 1.1234, 4719)
     def get(self, someparam):
         return self
     
@@ -124,5 +136,19 @@ class TestOandaAccount(unittest.TestCase):
         self.assertEqual(len(orders), 1)
         orders = self.account.get_orders('EUR_USD', 'WHATEVER')  
         self.assertEqual(len(orders), 0)
+        
+    # close an existing order
+    def test_close_order(self):
+        self.assertEqual(self.account.close_order(4719), 200)
+        # can't close the same order twice
+        self.assertNotEqual(self.account.close_order(4719), 200)
+        
+    # next steps
+    # open a market order
+    def test_market_order(self):
+        ticker = 'EUR_USD'
+        self.assertEqual(self.account.market_order(ticker, 1), 200)
+    # open a limit order
+        
         
 unittest.main()

@@ -98,3 +98,14 @@ class OandaAccount:
                     d['units'] = trade_positions[order.tradeID]
                     result.append(d)
         return result
+        
+    # close an order
+    # api.trade.close('101-004-6211473-001', 28) gives response
+    # check status!!!
+    # in this case
+    # self.api.trade.close(self.account_id, order_id)
+    def close_order(self, order_id):
+        response = self.api.trade.close(self.account_id, order_id)
+        status = response.status
+        return status
+    
