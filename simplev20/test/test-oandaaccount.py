@@ -72,7 +72,7 @@ class TestOandaAccount(unittest.TestCase):
         self.assertEqual(self.account.get_position("EUR_USD", 'long'), 100.0)
         self.assertEqual(self.account.get_position("EUR_USD", 'short'), -50.0)
         self.assertEqual(self.account.get_position("EUR_GBP"), 0.0)
-#        self.assertRaises(ValueError, self.account.get_position("EUR_USD", 'nett'))
+        self.assertRaises(ValueError, self.account.get_position, ticker='EUR_USD', long_short='nett')
         
         
 unittest.main()
