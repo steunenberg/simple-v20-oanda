@@ -27,19 +27,19 @@ class OandaSession:
             self.url = "api-fxpractice.oanda.com"
         else:
             self.url = url
-        self.session = v20.Context(self.url, 443, token=self.key)
+        self.api = v20.Context(self.url, 443, token=self.key)
       
         self.accounts = {}
 
         try:
-            accountlist = self.session.account.list().get('accounts')
+            accountlist = self.api.account.list().get('accounts')
         except:
             msg = 'One of the parameters key ({}) or url ({}) seems to be wrong'
             raise ValueError(msg.format(self.key, self.url))
             
         for a in accountlist:
-            self.accounts[a.id] = OandaAccount(self.session, a.id)
-            acc = self.session.account.get(a.id)
+            self.accounts[a.id] = OandaAccount(self.api, a.id)
+            acc = self.api.account.get(a.id)
             acc = acc.get('account')
             if acc.alias == 'Primary':
                 self.primary = self.accounts[a.id]
@@ -55,11 +55,11 @@ class OandaSession:
 
     def __get_raw_curve(self, ticker, granularity='D', count=None, price='M'):
         if count is None:
-            response = self.session.instrument.candles(instrument=ticker, 
+            response = self.api.instrument.candles(instrument=ticker, 
                                                    granularity=granularity,
                                                    price=price)
         else:
-            response = self.session.instrument.candles(instrument=ticker, 
+            response = self.api.instrument.candles(instrument=ticker, 
                                                    granularity=granularity, 
                                                    count=count,
                                                    price=price)
@@ -133,4 +133,4 @@ class OandaSession:
         result['granularity'] = granularity               
         return result
 
-session = OandaSession()
+#session = OandaSession()
