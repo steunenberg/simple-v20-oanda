@@ -7,6 +7,7 @@ Created on Mon Jun 26 11:45:44 2017
 
 #from simplev20.oandasession import OandaSession
 from simplev20.oandaaccount import OandaAccount
+from simplev20.oandaorder import OandaOrder
 
 from collections import defaultdict
 import unittest
@@ -135,10 +136,10 @@ class TestOandaAccount(unittest.TestCase):
         self.assertEqual(len(orders), 1)
         self.assertIsInstance(orders, list)
         order = orders[0]
-        self.assertIsInstance(order, dict)
-        self.assertEqual(order['type'], 'TAKE_PROFIT')
-        self.assertEqual(order['units'], -1000.00)
-        self.assertEqual(order['price'], 1.1234)
+        self.assertIsInstance(order, OandaOrder)
+        self.assertEqual(order.type, 'TAKE_PROFIT')
+        self.assertEqual(order.units, -1000.00)
+        self.assertEqual(order.price, 1.1234)
         orders = self.account.get_orders('EUR_USD', 'ALL')  
         self.assertEqual(len(orders), 1)
         orders = self.account.get_orders('EUR_USD', 'TAKE_PROFIT')  

@@ -4,6 +4,7 @@ Created on Mon Jun 26 11:39:43 2017
 
 @author: Johan  <kontakt@steunenberg.de>
 """
+from simplev20.oandaorder import OandaOrder
 
 class OandaAccount:
     """
@@ -96,7 +97,11 @@ class OandaAccount:
                     d['type'] = _type
                     d['price'] = order.price
                     d['units'] = trade_positions[order.tradeID]
-                    result.append(d)
+                    result.append(OandaOrder(order_id=order.id, 
+                                             order_type=_type, 
+                                             price=order.price, 
+                                             units=trade_positions[order.tradeID],
+                                             trade_id=order.tradeID))
         return result
         
     # close an order
