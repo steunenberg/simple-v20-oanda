@@ -83,9 +83,9 @@ class V20SessionStub:
         
 class TestOandaAccount(unittest.TestCase):
     """
-    The test assumes the availability of a valid oanda key in the
-    environment variable OANDA_KEY. The key should be valid for 
-    a test account
+    The test assumes uses a V20SessionStub, so you
+    don't have to connect with a real OandaSession object
+    Maybe this is not what you'd want in the end
     """
     def setUp(self):
         self.api = V20SessionStub()
@@ -152,7 +152,6 @@ class TestOandaAccount(unittest.TestCase):
         # can't close the same order twice
         self.assertNotEqual(self.account.close_order(4719), 200)
         
-    # next steps
     # open a market order
     def test_market_order(self):
         ticker = 'EUR_USD'
@@ -161,6 +160,7 @@ class TestOandaAccount(unittest.TestCase):
         self.assertNotEqual(self.account.market_order(wrong_ticker, 1), 200)
         self.assertNotEqual(self.account.market_order(ticker, 0), 200)
         
+    # next steps
     # open a limit order
         
         
