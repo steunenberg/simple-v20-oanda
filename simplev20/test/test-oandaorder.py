@@ -15,7 +15,8 @@ class TestOandaOrder(unittest.TestCase):
         self.order = OandaOrder(order_id='4567', 
                                 order_type='STOP', 
                                 price=1.23245, 
-                                units=10)
+                                units=10,
+                                trade_id='4551')
 
     def test_create(self):
         """
@@ -42,5 +43,9 @@ class TestOandaOrder(unittest.TestCase):
     def test_id_property(self):
         self.assertEqual(self.order.id, '4567')
         self.assertRaises(AttributeError, setattr,  self.order, 'id', 4711)
+        
+    def test_trade_id_property(self):
+        self.assertEqual(self.order.trade_id, '4551')
+        self.assertRaises(AttributeError, setattr,  self.order, 'trade_id', 4711)
         
 unittest.main()        

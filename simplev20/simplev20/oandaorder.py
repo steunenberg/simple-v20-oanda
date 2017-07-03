@@ -11,11 +11,12 @@ class OandaOrder:
     For a start it's just a simple data container
     using python properties    
     """
-    def __init__(self, order_id, order_type, price, units):
+    def __init__(self, order_id, order_type, price, units, trade_id):
         self.__id = order_id
         self.__type = order_type
         self.price = price
         self.units = units
+        self.__trade_id = trade_id
         
     @property
     def price(self):
@@ -37,17 +38,24 @@ class OandaOrder:
         self.__units = units
 
     """
-    type only has a getter
+    type property only has a getter
     """
     @property
     def type(self):
         return self.__type
 
     """
-    id only has a getter
+    id property only has a getter
     """
     @property
     def id(self):
         return self.__id
+
+    """
+    trade_id property only has a getter
+    """
+    @property
+    def trade_id(self):
+        return self.__trade_id
 # 
            
