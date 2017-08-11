@@ -118,4 +118,9 @@ class OandaAccount:
         response = self.api.order.market(self.account_id, ticker, units)
         status = response.status
         return status
+        
+    def get_available_instruments(self):
+        response = self.api.account.instruments(self.account_id)
+        instruments = response.get("instruments", "200")
+        return sorted([i.name for i in instruments])
     

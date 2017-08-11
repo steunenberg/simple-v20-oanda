@@ -7,6 +7,7 @@ Created on Mon Jun 26 11:45:44 2017
 
 #from simplev20.oandasession import OandaSession
 from simplev20.oandaaccount import OandaAccount
+from simplev20.oandasession import OandaSession
 from simplev20.oandaorder import OandaOrder
 
 from collections import defaultdict
@@ -80,6 +81,8 @@ class V20SessionStub:
         self.order = self.trade
     def get(self, someparam):
         return self
+    def instruments(id):
+        return["EUR_USD"]
     
         
 class TestOandaAccount(unittest.TestCase):
@@ -160,6 +163,11 @@ class TestOandaAccount(unittest.TestCase):
         self.assertEqual(self.account.market_order(ticker, 1), 200)
         self.assertNotEqual(self.account.market_order(wrong_ticker, 1), 200)
         self.assertNotEqual(self.account.market_order(ticker, 0), 200)
+        
+    # get list of tradeable instruments
+    def test_get_available_instruments(self):
+        #TODO: don't know how to test!
+        self.assertEqual(len(self.account.get_available_instruments()),1);
         
     # next steps
     # open a limit order
