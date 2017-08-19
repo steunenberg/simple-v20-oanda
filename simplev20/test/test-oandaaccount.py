@@ -81,7 +81,7 @@ class V20SessionStub:
         self.order = self.trade
     def get(self, someparam):
         return self
-    def instruments(id):
+    def instruments(self,id):
         return["EUR_USD"]
     
         
@@ -166,9 +166,18 @@ class TestOandaAccount(unittest.TestCase):
         
     # get list of tradeable instruments
     def test_get_available_instruments(self):
-        #TODO: don't know how to test!
-        self.assertEqual(len(self.account.get_available_instruments()),1);
-        
+        #TODO: don't know how to test with dummies
+        session = OandaSession()
+        self.account=session.get_primary_account()
+        self.assertGreater(len(self.account.get_available_instruments()),1);
+    
+    # this one is also hard to test with a dummy
+    def test_get_bid_ask_price(self):
+        session = OandaSession()
+        self.account=session.get_primary_account()
+        ticker = 'EUR_USD'
+        bid, ask = self.account.get_bid_ask_price(ticker)
+        self.assertGreater(ask, bid);
     # next steps
     # open a limit order
         

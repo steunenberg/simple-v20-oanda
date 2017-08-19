@@ -104,6 +104,17 @@ class OandaAccount:
                                              trade_id=order.tradeID))
         return result
         
+    def get_bid_ask_price(self, ticker):
+        ask = -1
+        bid = -1
+        response = self.api.pricing.get(self.account_id, instruments=ticker)
+        if response.status == 200:
+            prices = response.body['prices']
+            ask = prices[0].asks[0].price
+            bid = prices[0].bids[0].price
+        return  bid, ask
+    
+    
     # close an order
     # api.trade.close('101-004-6211473-001', 28) gives response
     # check status!!!
